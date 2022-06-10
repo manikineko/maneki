@@ -9,27 +9,23 @@ pub struct Skybox {
 }
 
 impl Skybox {
-    pub fn new(name: String, uuid: String, contents: SkyboxContent) -> Skybox {
+    pub fn new<S: Into<String>>(name: S, uuid: S, contents: SkyboxContent) -> Skybox {
         Skybox {
-            name,
-            uuid,
+            name: name.into(),
+            uuid: uuid.into(),
             contents,
         }
     }
 }
 
 pub enum SkyboxContent {
-    Color(Color)
+    Color(Color),
 }
 
 impl GameObject for Skybox {
-    fn update(&mut self, rl: &mut raylib::RaylibHandle, thread: &raylib::RaylibThread) {
-        let mut d = rl.begin_drawing(thread);
-
+    fn draw(&mut self, d: &mut raylib::prelude::RaylibDrawHandle, _: &raylib::RaylibThread) {
         match self.contents {
-            SkyboxContent::Color(col) => {
-                d.clear_background(col)
-            },
+            SkyboxContent::Color(col) => d.clear_background(col),
         }
     }
 

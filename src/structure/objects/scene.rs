@@ -10,8 +10,12 @@ pub struct Scene {
 }
 
 impl Scene {
-    pub fn new() -> Scene {
-        Default::default()
+    pub fn new<S: Into<String>>(name: S, uuid: S) -> Scene {
+        Self {
+            uuid: uuid.into(),
+            name: name.into(),
+            ..Default::default()
+        }
     }
 
     pub fn add<G: GameObject + 'static>(&mut self, obj: G) {
@@ -24,6 +28,15 @@ impl GameObject for Scene {
         self.objects
             .iter_mut()
             .for_each(|obj| obj.update(rl, thread));
+
+        let mut d = rl.begin_drawing(thread);
+        self.draw(&mut d, thread);
+    }
+
+    fn draw(&mut self, d: &mut raylib::prelude::RaylibDrawHandle, thread: &RaylibThread) {
+        self.objects
+            .iter_mut()
+            .for_each(|obj| obj.draw(d, thread));
     }
 
     fn position(&self) -> raylib::math::Vector3 {

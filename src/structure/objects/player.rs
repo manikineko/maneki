@@ -1,7 +1,8 @@
+use raylib::consts::MouseButton;
 use raylib::{color::Color, math::Vector3, prelude::RaylibDraw, RaylibThread};
 
-use crate::structure::gameobj::GameObject;
 use crate::structure::controller::Controller;
+use crate::structure::gameobj::GameObject;
 #[derive(Debug, Clone, Default)]
 /// Ingame player type
 pub struct Player {
@@ -10,25 +11,31 @@ pub struct Player {
     position: Vector3,
     uuid: String,
     name: String,
+    color: Color,
     //model: Model,
 }
 
 impl Player {
-    pub fn new() -> Player {
-        Default::default()
+    pub fn new<S: Into<String>>(name: S, uuid: S) -> Player {
+        Self {
+            uuid: uuid.into(),
+            name: name.into(),
+            ..Default::default()
+        }
     }
 }
 
 impl GameObject for Player {
-    fn update(&mut self, rh: &mut raylib::RaylibHandle, thread: &RaylibThread) {
-        self.position.y += 0.01;
-        
-        if self.position.y as i32 >= rh.get_screen_height() - 10 {
-            self.position.y = 10.0;
-        }
+    fn update(&mut self, rh: &mut raylib::RaylibHandle, _: &RaylibThread) {
+        let mouse_pos = rh.get_mouse_position();
+        self.position.x = mouse_pos.x;
+        self.position.y = mouse_pos.y;
 
-        let mut d = rh.begin_drawing(thread);
-        self.draw(&mut d, thread)
+        if rh.is_mouse_button_down(MouseButton::MOUSE_LEFT_BUTTON) {
+            self.color = Color::PINK;
+        } else {
+            self.color = Color::BLACK;
+        }
     }
 
     fn draw(&mut self, d: &mut raylib::prelude::RaylibDrawHandle, _: &RaylibThread) {
@@ -36,7 +43,7 @@ impl GameObject for Player {
             self.position.x as i32,
             self.position.y as i32,
             10.0,
-            Color::BLACK,
+            self.color,
         )
     }
 
