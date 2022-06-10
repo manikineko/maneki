@@ -3,6 +3,7 @@ use raylib::{color::Color, math::Vector3, prelude::RaylibDraw, RaylibThread};
 
 use crate::structure::controller::Controller;
 use crate::structure::gameobj::GameObject;
+
 #[derive(Debug, Clone, Default)]
 /// Ingame player type
 pub struct Player {
