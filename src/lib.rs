@@ -2,12 +2,12 @@
 
 mod rendering;
 mod structure;
-
+mod steam;
 #[cfg(test)]
 mod test {
     use crate::structure::{gameobj::GameObject, objects::*, texture::Texture};
     use raylib::prelude::*;
-
+    use crate::steam::steam_init;
     #[test]
     fn window() {
         let (mut rl, thread) = raylib::init().size(640, 480).title("Hello, World").build();
@@ -25,7 +25,7 @@ mod test {
 
         scene.add(bg);
         scene.add(player);
-
+        let (steam_client,steam_single) = steam_init();
         while !rl.window_should_close() {
             scene.update(&mut rl, &thread);
         }
