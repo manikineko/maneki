@@ -19,7 +19,7 @@ impl Scene {
     }
 
     pub fn add<G: GameObject + 'static>(&mut self, obj: G) {
-        self.objects.push(GameObject::boxed(obj))
+        self.objects.push(obj.boxed())
     }
 }
 

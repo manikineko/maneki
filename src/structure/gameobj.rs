@@ -16,10 +16,10 @@ pub trait GameObject {
     fn set_name(&mut self, name: String) {}
     fn set_uuid(&mut self, uuid: String) {}
 
-    fn boxed(s: Self) -> Box<Self>
-    where
-        Self: Sized,
+    fn boxed(self) -> Box<Self>
+    where 
+        Self: Sized
     {
-        Box::new(s)
+        Box::new(self)
     }
 }
