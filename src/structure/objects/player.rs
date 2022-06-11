@@ -1,6 +1,6 @@
 use raylib::consts::MouseButton;
 use raylib::{color::Color, math::Vector3, prelude::RaylibDraw, RaylibThread};
-
+use raylib::consts::KeyboardKey;
 use crate::structure::controller::Controller;
 use crate::structure::gameobj::GameObject;
 
@@ -28,9 +28,22 @@ impl Player {
 
 impl GameObject for Player {
     fn update(&mut self, rh: &mut raylib::RaylibHandle, _: &RaylibThread) {
-        let mouse_pos = rh.get_mouse_position();
-        self.position.x = mouse_pos.x;
-        self.position.y = mouse_pos.y;
+        if rh.is_key_down(KeyboardKey::KEY_W) {
+            
+            self.position.y -= 0.1;
+        }
+        if rh.is_key_down(KeyboardKey::KEY_S) {
+            
+            self.position.y += 0.1;
+        }
+        if rh.is_key_down(KeyboardKey::KEY_A) {
+            self.position.x -= 0.1;
+        }
+        if rh.is_key_down(KeyboardKey::KEY_D) {
+            self.position.x += 0.1;
+        }
+
+        
 
         if rh.is_mouse_button_down(MouseButton::MOUSE_LEFT_BUTTON) {
             self.color = Color::PINK;
