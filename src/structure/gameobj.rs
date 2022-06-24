@@ -1,7 +1,9 @@
+use std::fmt::Debug;
+
 use raylib::{math::Vector3, prelude::RaylibDrawHandle, RaylibHandle, RaylibThread};
 
 #[allow(unused_variables)]
-pub trait GameObject {
+pub trait GameObject : Debug {
     // Lifecycle
     fn init(&mut self, rl: &mut RaylibHandle, thread: &RaylibThread) {}
     fn update(&mut self, rl: &mut RaylibHandle, thread: &RaylibThread) {}

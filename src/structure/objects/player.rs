@@ -1,87 +1,48 @@
-use raylib::consts::MouseButton;
-use raylib::{color::Color, math::Vector3, prelude::RaylibDraw, RaylibThread};
-use raylib::consts::KeyboardKey;
 use crate::structure::controller::Controller;
 use crate::structure::gameobj::GameObject;
+use maneki_macros::game_object;
+use raylib::consts::KeyboardKey;
+use raylib::consts::MouseButton;
+use raylib::{color::Color, prelude::RaylibDraw, RaylibThread};
 
-#[derive(Debug, Clone, Default)]
+#[game_object(
+    update = update,
+    draw = draw,
+    props = {
+        controller: Controller,
+        local: bool,
+        color: Color 
+    }
+)]
 /// Ingame player type
-pub struct Player {
-    controller: Controller,
-    local: bool,
-    position: Vector3,
-    uuid: String,
-    name: String,
-    color: Color,
-    //model: Model,
-}
+pub struct Player;
 
-impl Player {
-    pub fn new<S: Into<String>>(name: S, uuid: S) -> Player {
-        Self {
-            uuid: uuid.into(),
-            name: name.into(),
-            ..Default::default()
-        }
+fn update(instance: &mut Player, rh: &mut raylib::RaylibHandle, _: &RaylibThread) {
+    if rh.is_key_down(KeyboardKey::KEY_W) {
+        instance.position.y -= 0.1;
+    }
+    if rh.is_key_down(KeyboardKey::KEY_S) {
+        instance.position.y += 0.1;
+    }
+    if rh.is_key_down(KeyboardKey::KEY_A) {
+        instance.position.x -= 0.1;
+    }
+    if rh.is_key_down(KeyboardKey::KEY_D) {
+        instance.position.x += 0.1;
+    }
+
+    if rh.is_mouse_button_down(MouseButton::MOUSE_LEFT_BUTTON) {
+        instance.color = Color::PINK;
+    } else {
+        instance.color = Color::BLACK;
     }
 }
 
-impl GameObject for Player {
-    fn update(&mut self, rh: &mut raylib::RaylibHandle, _: &RaylibThread) {
-        if rh.is_key_down(KeyboardKey::KEY_W) {
-            
-            self.position.y -= 0.1;
-        }
-        if rh.is_key_down(KeyboardKey::KEY_S) {
-            
-            self.position.y += 0.1;
-        }
-        if rh.is_key_down(KeyboardKey::KEY_A) {
-            self.position.x -= 0.1;
-        }
-        if rh.is_key_down(KeyboardKey::KEY_D) {
-            self.position.x += 0.1;
-        }
-
-        
-
-        if rh.is_mouse_button_down(MouseButton::MOUSE_LEFT_BUTTON) {
-            self.color = Color::PINK;
-        } else {
-            self.color = Color::BLACK;
-        }
-    }
-
-    fn draw(&mut self, d: &mut raylib::prelude::RaylibDrawHandle, _: &RaylibThread) {
-        d.draw_circle(
-            self.position.x as i32,
-            self.position.y as i32,
-            10.0,
-            self.color,
-        )
-    }
-
-    fn position(&self) -> raylib::math::Vector3 {
-        self.position
-    }
-
-    fn name(&self) -> String {
-        self.name.clone()
-    }
-
-    fn uuid(&self) -> String {
-        self.uuid.clone()
-    }
-
-    fn set_position(&mut self, pos: raylib::math::Vector3) {
-        self.position = pos;
-    }
-
-    fn set_name(&mut self, name: String) {
-        self.name = name;
-    }
-
-    fn set_uuid(&mut self, uuid: String) {
-        self.uuid = uuid;
-    }
+fn draw(instance: &mut Player, d: &mut raylib::prelude::RaylibDrawHandle, _: &RaylibThread) {
+    d.draw_circle(
+        instance.position.x as i32,
+        instance.position.y as i32,
+        20.0,
+        instance.color,
+    )
 }
