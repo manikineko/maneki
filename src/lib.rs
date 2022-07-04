@@ -3,11 +3,10 @@
 mod rendering;
 mod structure;
 mod steam;
-
 #[cfg(test)]
 #[allow(unused)]
 mod test {
-    use crate::structure::{gameobj::GameObject, objects::*, texture::Texture, controller::Controller};
+    use crate::{structure::{gameobj::GameObject, objects::*, texture::Texture, controller::Controller}, rendering::model::FBXFile};
     use raylib::prelude::*;
     use crate::steam::steam_init;
 
@@ -40,7 +39,7 @@ mod test {
             "owo",
             Texture::Image2d(bg_texture, Color::WHITE),
         );
-
+        
         scene.add(bg);
         scene.add(player);
         let (steam_client,steam_single) = steam_init();
