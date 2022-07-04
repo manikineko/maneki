@@ -30,7 +30,7 @@ mod test {
         let (mut rl, thread) = raylib::init().size(640, 480).title("Hello, World").build();
 
         rl.hide_cursor();
-        let bg_texture = rl.load_texture(&thread, "placeholder.png").unwrap();
+        let bg_texture = rl.load_texture(&thread, "bg.png").unwrap();
 
         let mut scene = scene::Scene::new("BigBoobs", "yeah", Vec::new());
         let player = player::Player::new("Me!!", "it krista", Controller(0), true, Color::BLACK);
@@ -44,6 +44,7 @@ mod test {
         scene.add(player);
         let (steam_client,steam_single) = steam_init();
         while !rl.window_should_close() {
+            
             scene.update(&mut rl, &thread);
         }
     }
