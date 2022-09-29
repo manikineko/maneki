@@ -7,7 +7,7 @@ mod structure;
 #[cfg(test)]
 #[allow(unused)]
 mod test {
-    use crate::steam::steam_init;
+    // use crate::steam::steam_init;
     use crate::structure::{
         controller::Controller, gameobj::GameObject, objects::*, texture::Texture,
     };
@@ -42,7 +42,7 @@ mod test {
 
         scene.add(bg);
         scene.add(player);
-        let (steam_client, steam_single) = steam_init();
+        // let (steam_client, steam_single) = steam_init();
         while !rl.window_should_close() {
             
             scene.update(&mut rl, &thread);
