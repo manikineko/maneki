@@ -44,6 +44,7 @@ mod test {
         scene.add(player);
         let (steam_client, steam_single) = steam_init();
         while !rl.window_should_close() {
+            
             scene.update(&mut rl, &thread);
         }
     }

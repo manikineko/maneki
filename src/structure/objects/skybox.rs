@@ -1,5 +1,7 @@
+use std::error::Error;
+
 use maneki_macros::game_object;
-use raylib::{color::Color, prelude::RaylibDraw};
+use raylib::{color::Color, prelude::RaylibDraw, texture::Texture2D};
 
 use crate::structure::{gameobj::GameObject, texture::Texture};
 
@@ -19,7 +21,9 @@ fn draw(instance: &mut Skybox, d: &mut raylib::prelude::RaylibDrawHandle, _: &ra
             let w = d.get_screen_width() as f32;
             let h = d.get_screen_height() as f32;
 
-            d.draw_texture(texture, w as i32, h as i32, Color::BLACK)
+            let x = 0;
+            let y = 0; 
+            d.draw_texture(texture, x,y, Color::WHITE);
         },
     }
 }
