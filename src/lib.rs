@@ -1,15 +1,17 @@
 #![allow(dead_code)]
 
 mod rendering;
-mod structure;
 mod steam;
+mod structure;
 
 #[cfg(test)]
 #[allow(unused)]
 mod test {
-    use crate::structure::{gameobj::GameObject, objects::*, texture::Texture, controller::Controller};
-    use raylib::prelude::*;
     use crate::steam::steam_init;
+    use crate::structure::{
+        controller::Controller, gameobj::GameObject, objects::*, texture::Texture,
+    };
+    use raylib::prelude::*;
 
     fn update(s: &mut Test, rl: &mut RaylibHandle, thread: &RaylibThread) {}
     fn init(s: &mut Test, rl: &mut RaylibHandle, thread: &RaylibThread) {}
@@ -31,19 +33,16 @@ mod test {
         let (mut rl, thread) = raylib::init().size(640, 480).title("Hello, World").build();
 
         rl.hide_cursor();
-        let bg_texture = rl.load_texture(&thread, "placeholder.png").unwrap();
+        // safety: uhhhhh
+        let bg_texture = unsafe {rl.load_texture(&thread, "placeholder.png").unwrap().make_weak()};
 
-        let mut scene = scene::Scene::new("BigBoobs", "yeah", Vec::new());
+        let mut scene = scene::Scene::new("BigBoobs", "yeah");
         let player = player::Player::new("Me!!", "it krista", Controller(0), true, Color::BLACK);
-        let bg = skybox::Skybox::new(
-            "uwu",
-            "owo",
-            Texture::Image2d(bg_texture, Color::WHITE),
-        );
+        let bg = skybox::Skybox::new("uwu", "owo", Texture::Image2d(bg_texture, Color::WHITE));
 
         scene.add(bg);
         scene.add(player);
-        let (steam_client,steam_single) = steam_init();
+        let (steam_client, steam_single) = steam_init();
         while !rl.window_should_close() {
             scene.update(&mut rl, &thread);
         }

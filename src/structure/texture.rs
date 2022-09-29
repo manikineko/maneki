@@ -1,11 +1,9 @@
-use raylib::{color::Color, texture::Texture2D};
-
+use raylib::{color::Color, texture::WeakTexture2D};
 
 /// Use as literal
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum Texture {
     Color(Color),
 
-    /// Fallback clear colour
-    Image2d(Texture2D, Color)
+    Image2d(WeakTexture2D, Color),
 }
